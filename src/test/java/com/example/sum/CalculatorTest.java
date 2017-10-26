@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 
 public class CalculatorTest{
 
-    private calculator calculator = new calculator();
+    private Calculator calculator = new Calculator();
 
     @Test
     public void testSum(){

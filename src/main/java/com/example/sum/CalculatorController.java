@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class calculatorController{
+public class CalculatorController{
     @Autowired
-    private calculator calculator;
+    private Calculator calculator;
 
     @RequestMapping("/sum")
     String sum(@RequestParam("a") Integer a, @RequestParam("b") Integer b){
