@@ -6,7 +6,7 @@ pipeline{
     stages{
         stage("Checkout"){
             steps{
-                git orl: "https://github.com/rolandtorma/Spring-devops.git"
+                git url: "https://github.com/rolandtorma/Spring-devops.git"
             }
         }
         stage("Compile"){
