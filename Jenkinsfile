@@ -1,24 +1,46 @@
 pipeline{
     agent any
-    parameters{
-        booleanParam(name: 'TEST_PROJECT', defaultValue: true)
-    }
     stages{
         stage("Checkout"){
             steps{
                 git url: "https://github.com/rolandtorma/Spring-devops.git"
             }
         }
-        stage("Compile"){
+        stage("Packaging"){
             steps{
-                sh "./gradlew compileJava"
+                sh "./gradlew build"
             }
         }
-        stage("Unit Test"){
-            when{ expression {return params.TEST_PROJECT}}
+        stage("Docker build"){
             steps{
-                sh "./gradlew test"
+                sh "docker build -t troland94/devops-pelda ."
             }
+        }
+        stage("Docker login"){
+            steps{
+                sh "docker login --username=troland94 --password=$docker_password"
+            }
+        }
+        stage("Docker push"){
+            steps{
+                sh "docker push troland94/devops-pelda"
+            }
+        }
+        stage("Docker to Staging"){
+            steps{
+                sh "docker run -d --rm -p 8765:8080 --name calculator troland94/devops-pelda"
+            }
+        }
+        stage("Acceptance test"){
+            steps{
+                sh "sleep 60"
+                sh "./acceptance_test.sh"
+            }
+        }
+    }
+    post {
+        always{
+            sh "docker stop calculator"
         }
     }
 }
